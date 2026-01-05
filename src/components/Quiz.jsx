@@ -3,7 +3,7 @@ import QuestionCard from "./QuestionCard";
 import Result from "./Result";
 const Quiz = () => {
   const [isFinished, setIsFinished] = useState(false);
-  const questions = [
+  const initialQuestions = [
     {
       question: "What is the capital of France?",
       options: ["Berlin", "Madrid", "Paris", "Rome"],
@@ -29,19 +29,32 @@ const Quiz = () => {
       explanation: "The Pacific Ocean is the largest ocean on Earth.",
     },
   ];
+  const [questions] = useState(() =>
+    // Shuffle once per quiz so order stays stable while answering
+    [...initialQuestions].sort(() => Math.random() - 0.5)
+  );
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlwAnswer = (selectedOption) => {
     if (selectedOption === questions[currentIndex].answer) {
       setScore(score + 1);
     }
+    // const nextIndex = currentIndex + 1;
+    // if (nextIndex < questions.length) {
+    //   setCurrentIndex(nextIndex);
+    // } else {
+    //   setIsFinished(true);
+    // }
+  };
+  const handleNext=()=>{
     const nextIndex = currentIndex + 1;
     if (nextIndex < questions.length) {
       setCurrentIndex(nextIndex);
     } else {
       setIsFinished(true);
     }
-  };
+  }
   const [score, setScore] = useState(0);
   const resetQuiz = () => {
     setCurrentIndex(0);
@@ -71,6 +84,13 @@ const Quiz = () => {
           handlwAnswer={handlwAnswer}
           currentIndex={currentIndex}
         />
+      )}
+      {!isFinished && (
+        <div className="nav-row">
+          <button className="next-btn" onClick={handleNext}>
+            Next
+          </button>
+        </div>
       )}
     </div>
   );

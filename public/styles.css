@@ -103,6 +103,34 @@ button:active {
   transform: scale(0.97);
 }
 
+/* ---------- NAVIGATION ---------- */
+.nav-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.next-btn {
+  width: auto;
+  min-width: 120px;
+  padding: 12px 18px;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  color: #0b1c12;
+  border: none;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.35);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.next-btn:hover {
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+  transform: translateY(-3px);
+}
+
+.next-btn:active {
+  transform: translateY(0);
+}
+
 /* ---------- RESULT ---------- */
 .score-text {
   font-size: 22px;
