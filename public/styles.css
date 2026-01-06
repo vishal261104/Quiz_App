@@ -23,7 +23,40 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+  /* background: linear-gradient(135deg, #667eea, #764ba2); */
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.45),
+      rgba(0, 0, 0, 0.45)
+    ),
+    url("./bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: moveBackground 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes moveBackground {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
 }
 
 /* ---------- MAIN CONTAINER ---------- */
@@ -42,21 +75,20 @@ div {
 }
 .progress-bar {
   width: 100%;
-  height: 14px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  height: 8px;
+  background: #e0e0e0;
   border-radius: 999px;
   margin-bottom: 18px;
   overflow: hidden;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  box-shadow: none;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7dd3fc 0%, #7f5af0 50%, #a78bfa 100%);
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
   border-radius: 999px;
   transition: width 0.35s ease-in-out;
-  box-shadow: 0 4px 12px rgba(127, 90, 240, 0.35);
+  box-shadow: none;
 }
 
 /* ---------- HEADINGS ---------- */

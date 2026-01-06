@@ -1,38 +1,41 @@
-import React, { useState } from "react";
+import React, {  useState,useEffect } from "react";
 import QuestionCard from "./QuestionCard";
 import Result from "./Result";
+
 const Quiz = () => {
   const [isFinished, setIsFinished] = useState(false);
-  const initialQuestions = [
-    {
-      question: "What is the capital of France?",
-      options: ["Berlin", "Madrid", "Paris", "Rome"],
-      answer: "Paris",
-      explanation: "Paris is the capital and most populous city of France.",
-    },
-    {
-      question: "Which planet is known as the Red Planet?",
-      options: ["Earth", "Mars", "Jupiter", "Saturn"],
-      answer: "Mars",
-      explanation:
-        "Mars is often called the 'Red Planet' because of its reddish appearance.",
-    },
-    {
-      question: "What is the largest ocean on Earth?",
-      options: [
-        "Atlantic Ocean",
-        "Indian Ocean",
-        "Arctic Ocean",
-        "Pacific Ocean",
-      ],
-      answer: "Pacific Ocean",
-      explanation: "The Pacific Ocean is the largest ocean on Earth.",
-    },
-  ];
-  const [questions] = useState(() =>
-    // Shuffle once per quiz so order stays stable while answering
-    [...initialQuestions].sort(() => Math.random() - 0.5)
-  );
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [lastScore, setLastScore] = useState(null);
+  const [bestScore, setBestScore] = useState(null);
+
+  useEffect(() => {
+    fetch("https://opentdb.com/api.php?amount=30&type=multiple")
+      .then((res) => res.json())
+      .then((data) => {
+        const formattedQuestions = data.results.map((q) => {
+          const options = [...q.incorrect_answers, q.correct_answer];
+
+          // shuffle options
+          options.sort(() => Math.random() - 0.5);
+
+          return {
+            question: decodeURIComponent(q.question),
+            options,
+            answer: q.correct_answer,
+            explanation: "Explanation will be added later",
+          };
+        });
+
+        setQuestions(formattedQuestions);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    setLastScore(localStorage.getItem("lastScore"));
+    setBestScore(localStorage.getItem("bestScore"));
+  }, []);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -40,28 +43,46 @@ const Quiz = () => {
     if (selectedOption === questions[currentIndex].answer) {
       setScore(score + 1);
     }
-    // const nextIndex = currentIndex + 1;
-    // if (nextIndex < questions.length) {
-    //   setCurrentIndex(nextIndex);
-    // } else {
-    //   setIsFinished(true);
-    // }
   };
-  const handleNext=()=>{
+  const handleNext = () => {
     const nextIndex = currentIndex + 1;
     if (nextIndex < questions.length) {
       setCurrentIndex(nextIndex);
     } else {
       setIsFinished(true);
     }
-  }
+  };
   const [score, setScore] = useState(0);
   const resetQuiz = () => {
     setCurrentIndex(0);
     setScore(0);
     setIsFinished(false);
   };
+  useEffect(() => {
+    if (isFinished) {
+      localStorage.setItem("lastScore", score);
+      const storedBestScore = localStorage.getItem("bestScore");
+      if (!storedBestScore || score > parseInt(storedBestScore)) {
+        localStorage.setItem("bestScore", score);
+      }
+      setLastScore(score);
+      setBestScore(
+        Math.max(parseInt(localStorage.getItem("bestScore")) || 0, score)
+      );
+    }
+  }, [isFinished,score]);
 
+  // if (isFinished) {
+  //   localStorage.setItem("lastScore", score);
+  //   const storedBestScore = localStorage.getItem("bestScore");
+  //   if (!storedBestScore || score > parseInt(storedBestScore)) {
+  //     localStorage.setItem("bestScore", score);
+  //   }
+  //   setLastScore(score);
+  //   setBestScore(
+  //     Math.max(parseInt(localStorage.getItem("bestScore")) || 0, score)
+  //   );
+  // }
   return (
     <div>
       <h1>Quiz App</h1>
@@ -75,17 +96,27 @@ const Quiz = () => {
           ></div>
         </div>
       )}
-
-      {isFinished ? (
-        <Result questions={questions} score={score} resetQuiz={resetQuiz} />
-      ) : (
-        <QuestionCard
-          questions={questions}
-          handlwAnswer={handlwAnswer}
-          currentIndex={currentIndex}
-        />
+      {loading && <p>Loading questions...</p>}
+      {!loading && (
+        <>
+          {isFinished ? (
+            <Result
+              questions={questions}
+              score={score}
+              resetQuiz={resetQuiz}
+              lastScore={lastScore}
+              bestScore={bestScore}
+            />
+          ) : (
+            <QuestionCard
+              questions={questions}
+              handlwAnswer={handlwAnswer}
+              currentIndex={currentIndex}
+            />
+          )}
+        </>
       )}
-      {!isFinished && (
+      {!isFinished && !loading && (
         <div className="nav-row">
           <button className="next-btn" onClick={handleNext}>
             Next
