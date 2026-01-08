@@ -59,6 +59,112 @@ body::before {
   }
 }
 
+/* ---------- DARK MODE TOGGLE ---------- */
+.dark-mode-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  z-index: 10000;
+  padding: 8px;
+  transition: transform 0.2s ease;
+  width: auto;
+  min-width: auto;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.2) rotate(20deg);
+  background: transparent;
+}
+
+/* ---------- DARK MODE STYLES ---------- */
+body.dark-mode {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.7)
+    ),
+    url("./bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+body.dark-mode::before {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+body.dark-mode .quiz-container {
+  background: #2d2d44;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .quiz-container h1 {
+  background: linear-gradient(135deg, #a8c0ff 0%, #e0c3fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+body.dark-mode .quiz-container p {
+  color: #bbb;
+}
+
+body.dark-mode h1 {
+  color: #e0e0e0;
+}
+
+body.dark-mode h2 {
+  color: #e0e0e0;
+}
+
+body.dark-mode h3 {
+  color: #e0e0e0;
+}
+
+body.dark-mode p {
+  color: #d0d0d0;
+}
+
+body.dark-mode button {
+  background: #3d3d5c;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+body.dark-mode button:hover {
+  background: #4d4d6c;
+}
+
+body.dark-mode .category-select {
+  background: #3d3d5c;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+body.dark-mode .category-select:hover {
+  border-color: #a8c0ff;
+}
+
+body.dark-mode .start-quiz-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+body.dark-mode .progress-bar {
+  background: #3d3d5c;
+}
+
+body.dark-mode .correct {
+  background: #2d5f2e !important;
+}
+
+body.dark-mode .wrong {
+  background: #7c2d2d !important;
+}
+
 /* ---------- MAIN CONTAINER ---------- */
 div {
   text-align: center;
@@ -72,6 +178,61 @@ div {
   width: 420px;
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.4s ease-in-out;
+}
+
+.quiz-container h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quiz-container p {
+  color: #555;
+  font-size: 16px;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+.category-select {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  font-size: 15px;
+  background-color: white;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+.category-select:hover {
+  border-color: #667eea;
+}
+
+.start-quiz-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 14px;
+  border: none;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.start-quiz-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  color:rgba(102, 126, 234, 0.5);
 }
 .progress-bar {
   width: 100%;
@@ -114,6 +275,8 @@ p {
 /* ---------- BUTTONS ---------- */
 button {
   width: 100%;
+  min-width: 280px;
+  max-width: 100%;
   padding: 12px;
   margin: 8px 0;
   border-radius: 10px;
@@ -124,6 +287,9 @@ button {
   font-weight: 500;
   cursor: pointer;
   transition: 0.25s ease-in-out;
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
 }
 
 button:hover {
@@ -140,11 +306,16 @@ button:active {
   display: flex;
   justify-content: flex-end;
   margin-top: 6px;
+  gap: 12px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
 }
 
 .next-btn {
-  width: auto;
+  width: 120px;
   min-width: 120px;
+  max-width: 120px;
   padding: 12px 18px;
   background: linear-gradient(90deg, #10b981, #34d399);
   color: #0b1c12;
@@ -152,6 +323,13 @@ button:active {
   box-shadow: 0 10px 20px rgba(16, 185, 129, 0.35);
   font-weight: 700;
   letter-spacing: 0.2px;
+}
+
+.submit-btn {
+  width: 130px;
+  min-width: 130px;
+  max-width: 130px;
+  padding: 12px 18px;
 }
 
 .next-btn:hover {
@@ -195,3 +373,89 @@ button:active {
     font-size: 14px;
   }
 }
+
+/* ---------- CONFETTI ANIMATION ---------- */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  opacity: 0;
+  animation: confetti-fall 3s ease-in infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    top: -10%;
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+    transform: rotate(720deg);
+  }
+}
+
+/* ---------- DARK MODE ---------- */
+.dark-mode {
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.7)
+    ),
+    url("./bg-dark.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+.dark-mode .quiz-container {
+  background: #1e1e1e;
+  color: #f6f7ff;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+}
+.dark-mode button {
+  background: #333;
+  color: #f6f7ff;
+  border: 2px solid #555;
+}
+.dark-mode button:hover {
+  background: #444;
+}
+.dark-mode .start-quiz-btn {
+  background: linear-gradient(135deg, #434343 0%, #000000 100%);
+  color: #f6f7ff;
+  box-shadow: 0 4px 15px rgba(67, 67, 67, 0.4);
+}
+.dark-mode .start-quiz-btn:hover {
+  box-shadow: 0 6px 20px rgba(67, 67, 67, 0.5);
+}
+.dark-mode .next-btn {
+  background: linear-gradient(90deg, #065f46, #10b981);
+  color: #f6f7ff;
+  box-shadow: 0 10px 20px rgba(6, 95, 70, 0.35);
+}
+.dark-mode .next-btn:hover {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+.dark-mode .progress-bar {
+  background: #333;
+}
+.dark-mode .progress-fill {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode p {
+  color: #f6f7ff;
+}
+
